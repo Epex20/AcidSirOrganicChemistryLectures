@@ -4,9 +4,10 @@ import LinkTile from './LinkTile';
 
 interface ChapterSectionProps {
   chapter: Chapter;
+  onVideoPlay?: (url: string, title: string) => void;
 }
 
-const ChapterSection: React.FC<ChapterSectionProps> = ({ chapter }) => {
+const ChapterSection: React.FC<ChapterSectionProps> = ({ chapter, onVideoPlay }) => {
   return (
     <section id={chapter.id} className="mb-8 sm:mb-10 scroll-mt-20 sm:scroll-mt-24">
       <div className="bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 
@@ -18,7 +19,11 @@ const ChapterSection: React.FC<ChapterSectionProps> = ({ chapter }) => {
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {chapter.links.map((link, index) => (
-          <LinkTile key={`${chapter.id}-link-${index}`} link={link} />
+          <LinkTile 
+            key={`${chapter.id}-link-${index}`} 
+            link={link} 
+            onVideoPlay={onVideoPlay}
+          />
         ))}
       </div>
     </section>

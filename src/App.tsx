@@ -4,9 +4,23 @@ import Footer from './components/Footer';
 import ChapterSection from './components/ChapterSection';
 import ChapterNavigation from './components/ChapterNavigation';
 import ThemeToggle from './components/ThemeToggle';
+import VideoPlayer from './components/VideoPlayer';
 import { chapters } from './data/chapters';
 
 function App() {
+  const [currentVideo, setCurrentVideo] = React.useState<{
+    url: string;
+    title: string;
+  } | null>(null);
+
+  const handleVideoPlay = (url: string, title: string) => {
+    setCurrentVideo({ url, title });
+  };
+
+  const handleCloseVideo = () => {
+    setCurrentVideo(null);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">      
       <Header />
@@ -30,8 +44,8 @@ function App() {
                 Welcome to ACID  Sir's Organic Chemistry Lectures
               </h2>
               <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-2">
-                Access all Organic chemistry lecture videos for NEET UG preparation. 
-                Click on any topic below to start learning.
+                Stream all Organic chemistry lecture videos for NEET UG preparation. 
+                Click on any lecture to watch directly in the built-in video player.
               </p>
             </div>
           </div>
@@ -60,12 +74,26 @@ function App() {
         </div>
         
         {chapters.map((chapter) => (
-          <ChapterSection key={chapter.id} chapter={chapter} />
+          <ChapterSection 
+            key={chapter.id} 
+            chapter={chapter} 
+            onVideoPlay={handleVideoPlay}
+          />
         ))}
       </main>
       
       <ThemeToggle />
       <Footer />
+      
+      {/* Video Player Modal */}
+      {currentVideo && (
+        <VideoPlayer
+          videoUrl={currentVideo.url}
+          title={currentVideo.title}
+          onClose={handleCloseVideo}
+          isOpen={!!currentVideo}
+        />
+      )}
     </div>
   );
 }
